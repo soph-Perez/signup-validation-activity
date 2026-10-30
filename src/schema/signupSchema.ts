@@ -1,26 +1,39 @@
 import { z } from 'zod';
 
-const signUpSchema = z.object({
-  firstName: z.string()
-    .min(3, 'First name must be at least 3 characters')
-    .max(20, 'First name cannot exceed 20 characters'),
+const signUpSchema = z
+  .object({
+    firstName: z
+      .string()
+      .trim()
+      .min(1, 'First name is required.')
+      .min(2, 'First name must be at least 2 characters.')
+      .max(30, 'First name cannot exceed 30 characters.'),
 
-  lastName: z.string()
-    .min(3, 'Last name must be at least 3 characters')
-    .max(20, 'Last name cannot exceed 20 characters'),
+    lastName: z
+      .string()
+      .trim()
+      .min(1, 'Last name is required.')
+      .min(2, 'Last name must be at least 2 characters.')
+      .max(30, 'Last name cannot exceed 30 characters.'),
 
-  email: z.string().email('Invalid email address').trim(),
+    email: z
+      .string()
+      .trim()
+      .min(1, 'Email is required.')
+      .email('Please enter a valid email address.'),
 
-  password: z.string()
-    .min(8, 'Password must be at least 8 characters'),
+    password: z
+      .string()
+      .min(1, 'Password is required.')
+      .min(8, 'Password must be at least 8 characters.'),
 
-  confirmPassword: z.string()
-    .min(8, 'Please confirm your password'),
-})
- .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    confirmPassword: z.string().min(1, 'Please confirm your password.'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match.',
     path: ['confirmPassword'],
-});
-;
+  });
+
+export type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export default signUpSchema;
