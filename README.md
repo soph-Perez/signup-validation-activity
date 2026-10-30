@@ -15,4 +15,4 @@
    ```
 ## ai-usage-docx
 
-(refer to D2L)
+(it is in the project)
